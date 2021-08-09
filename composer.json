@@ -1,0 +1,23 @@
+{
+    "name": "hexmakina/hopper",
+    "description": "Router and reverse router based on AltoRouter",
+    "type": "package",
+    "require": {
+        "php": ">=7.4",
+        "altorouter/altorouter": "2.0.*"
+    },
+    "license": "mit",
+    "authors": [
+        {
+            "name": "HexMakina",
+            "email": "touch@hexmakina.be",
+            "homepage": "https://hexmakina.be"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "HexMakina\\Hopper\\": "/"
+        }
+    }
+}
