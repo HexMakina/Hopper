@@ -36,7 +36,7 @@ class hopper extends \AltoRouter implements RouterInterface
     unset($dbg['matchTypes']);
     return $dbg;
   }
-  // ----------------------------------------------------------- MATCHING REQUESTS
+  // -- MATCHING REQUESTS
   public function match($requestUrl = NULL, $requestMethod = NULL)
   {
     $this->match = parent::match($requestUrl, $requestMethod);
@@ -117,7 +117,7 @@ class hopper extends \AltoRouter implements RouterInterface
     return $this->match['name'];
   }
 
-  // ----------------------------------------------------------- ROUTING TOOLS
+  // -- ROUTING TOOLS
   public function route_exists($route) : bool
   {
     return isset($this->namedRoutes[$route]);
@@ -231,7 +231,7 @@ class hopper extends \AltoRouter implements RouterInterface
     die;
   }
 
-  // ----------------------------------------------------------- PROCESSING REQUESTS
+  // -- PROCESSING REQUESTS
   public function requests() : bool
   {
     return $_SERVER['REQUEST_METHOD'] === self::REQUEST_GET;
