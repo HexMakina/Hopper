@@ -50,28 +50,33 @@ class hopper extends \AltoRouter implements RouterInterface
         $res = explode('::', $this->target());
 
         if ($res === false || !isset($res[1]) || isset($res[2])) {
-            throw new RouterException('INVALID_TARGET');
+            throw new RouterException('INVALID_TARGET_FORMAT');
         }
 
-        $target_controller = $res[0];
-        $target_method = $res[1];
-        $found = false;
+        $this->match['target_controller'] = $res[0];
+        $this->match['target_method'] = $res[1];
 
-        $controller_class_name = null;
-        foreach ($this->controller_namespaces as $controller_ns) {
-            if ($found = class_exists($controller_class_name = "$controller_ns$target_controller")) {
-                break;
-            }
-        }
+        return [$res[0], $res[1]];
 
-        if ($found === false) {
-            throw new RouterException('INVALID_CONTROLLER_NAME');
-        }
+        // $target_controller = $res[0];
+        // $target_method = $res[1];
+        // $found = false;
+        //
+        // $controller_class_name = null;
+        // foreach ($this->controller_namespaces as $controller_ns) {
+        //     if ($found = class_exists($controller_class_name = "$controller_ns$target_controller")) {
+        //         break;
+        //     }
+        // }
+        //
+        // if ($found === false) {
+        //     throw new RouterException('INVALID_CONTROLLER_NAME');
+        // }
 
-        $this->match['target_controller'] = $controller_class_name;
-        $this->match['target_method'] = $target_method;
-
-        return [$controller_class_name, $target_method];
+        // $this->match['target_controller'] = $controller_class_name;
+        // $this->match['target_method'] = $target_method;
+        //
+        // return [$controller_class_name, $target_method];
     }
 
     public function params($param_name = null)
