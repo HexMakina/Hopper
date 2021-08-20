@@ -16,7 +16,7 @@ interface RouterInterface
     public function prehop($route, $route_params = []);
 
   // heads to another location
-    public function hop($route, $route_params = []);
+    public function hop($route = null, $route_params = []);
 
   // do you GET it ?
     public function requests(): bool;
