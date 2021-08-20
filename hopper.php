@@ -241,7 +241,7 @@ class hopper extends \AltoRouter implements RouterInterface
         ob_clean();
         flush();
         readfile($file_path);
-        die;
+        // die; // might be useless after all
     }
 
   // -- PROCESSING REQUESTS
