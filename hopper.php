@@ -11,7 +11,6 @@ class hopper extends \AltoRouter implements RouterInterface
 {
     private $match = null;
     private $file_root = null;
-    // private $controller_namespaces = null;
 
   //----------------------------------------------------------- INITIALISATION
     public function __construct($settings)
@@ -24,8 +23,6 @@ class hopper extends \AltoRouter implements RouterInterface
 
         $this->set_web_base($settings['web_base'] ?? '');
         $this->set_file_root($settings['file_root'] ?? __DIR__);
-
-        // $this->controller_namespaces = $settings['controller_namespaces'] ?? [];
 
         $this->map(self::REQUEST_GET, '', $settings['route_home'], self::ROUTE_HOME_NAME);
     }
@@ -57,26 +54,6 @@ class hopper extends \AltoRouter implements RouterInterface
         $this->match['target_method'] = $res[1];
 
         return [$res[0], $res[1]];
-
-        // $target_controller = $res[0];
-        // $target_method = $res[1];
-        // $found = false;
-        //
-        // $controller_class_name = null;
-        // foreach ($this->controller_namespaces as $controller_ns) {
-        //     if ($found = class_exists($controller_class_name = "$controller_ns$target_controller")) {
-        //         break;
-        //     }
-        // }
-        //
-        // if ($found === false) {
-        //     throw new RouterException('INVALID_CONTROLLER_NAME');
-        // }
-
-        // $this->match['target_controller'] = $controller_class_name;
-        // $this->match['target_method'] = $target_method;
-        //
-        // return [$controller_class_name, $target_method];
     }
 
     public function params($param_name = null)
