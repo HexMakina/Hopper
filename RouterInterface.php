@@ -29,10 +29,17 @@ interface RouterInterface
 
 
     public function web_root(): string;
-    public function set_web_base($setter);
+    // public function file_root(): string;
 
-    public function file_root(): string;
-    public function set_file_root($setter);
+    public function mapHomeRoute($route);
+
+    public function setFilePath($setter);
+    public function setBasePath($setter);
+
+    public function filePath($setter);
+    public function basePath($setter);
+
+    // public function set_file_root($setter);
 
     public function target_controller();
     public function target_method();

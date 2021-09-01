@@ -13,18 +13,10 @@ class hopper extends \AltoRouter implements RouterInterface
     private $file_root = null;
 
   //----------------------------------------------------------- INITIALISATION
-    public function __construct($settings)
+
+    public function mapHomeRoute($route)
     {
-        if (!isset($settings['route_home'])) {
-            throw new RouterException('ROUTE_HOME_UNDEFINED');
-        }
-
-        parent::__construct();
-
-        $this->set_web_base($settings['web_base'] ?? '');
-        $this->set_file_root($settings['file_root'] ?? __DIR__);
-
-        $this->map(self::REQUEST_GET, '', $settings['route_home'], self::ROUTE_HOME_NAME);
+      $this->map(self::REQUEST_GET, '', $route, self::ROUTE_HOME_NAME);
     }
 
     public function __debugInfo(): array
@@ -244,25 +236,23 @@ class hopper extends \AltoRouter implements RouterInterface
 
     public function web_root(): string
     {
-        return $this->web_host() . $this->web_base();
+        return $this->web_host() . $this->basePath();
     }
 
-    public function web_base(): string
+    // return web base
+    public function basePath(): string
     {
-        return $this->basePath ?? '';
+      return $this->basePath ?? '';
     }
 
-    public function set_web_base($setter)
+    // returns root filepath for project
+    // default out of vendor/hexmakina/Hopper
+    public function filePath(): string
     {
-        $this->setBasePath($setter);
+      return $this->file_root ?? __DIR__.'/../../';
     }
 
-    public function file_root(): string
-    {
-        return $this->file_root ?? __DIR__;
-    }
-
-    public function set_file_root($setter)
+    public function setFilePath($setter)
     {
         $this->file_root = realpath($setter) . '/';
     }
