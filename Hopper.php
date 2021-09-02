@@ -16,7 +16,7 @@ class Hopper extends \AltoRouter implements RouterInterface
 
     public function mapHomeRoute($route)
     {
-      $this->map(self::REQUEST_GET, '', $route, self::ROUTE_HOME_NAME);
+        $this->map(self::REQUEST_GET, '', $route, self::ROUTE_HOME_NAME);
     }
 
     public function __debugInfo(): array
@@ -222,22 +222,24 @@ class Hopper extends \AltoRouter implements RouterInterface
     }
 
     // return web base
-    public function basePath($setter=null): string
+    public function basePath($setter = null): string
     {
-      if(!is_null($setter))
-        $this->basePath = $setter;
+        if (!is_null($setter)) {
+            $this->basePath = $setter;
+        }
 
-      return $this->basePath ?? '';
+        return $this->basePath ?? '';
     }
 
     // returns root filepath for project
     // default out of vendor/hexmakina/Hopper
-    public function filePath($setter=null): string
+    public function filePath($setter = null): string
     {
-      if(!is_null($setter))
-        $this->file_root = realpath($setter) . '/';
+        if (!is_null($setter)) {
+            $this->file_root = realpath($setter) . '/';
+        }
 
-      return $this->file_root ?? __DIR__.'/../../';
+        return $this->file_root ?? __DIR__ . '/../../';
     }
 
 
@@ -262,5 +264,4 @@ class Hopper extends \AltoRouter implements RouterInterface
       // $dat_ass[$key] is not a string, return match[$key]
         return $dat_ass[$key];
     }
-
 }

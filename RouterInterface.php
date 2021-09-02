@@ -36,8 +36,8 @@ interface RouterInterface
     public function setFilePath($setter);
     public function setBasePath($setter);
 
-    public function filePath($setter=null): string;
-    public function basePath($setter=null): string;
+    public function filePath($setter = null): string;
+    public function basePath($setter = null): string;
 
     // public function set_file_root($setter);
 
