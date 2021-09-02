@@ -8,12 +8,12 @@ interface RouterInterface
     const REQUEST_POST = 'POST';
     const ROUTE_HOME_NAME = 'home';
 
-    public function route_exists($route): bool;
+    public function routeExists($route): bool;
 
     public function match($requestUrl = null, $requestMethod = null);
 
   // generates URL for href and location
-    public function prehop($route, $route_params = []);
+    public function hyp($route, $route_params = []);
 
   // heads to another location
     public function hop($route = null, $route_params = []);
@@ -25,10 +25,10 @@ interface RouterInterface
     public function submits(): bool;
     public function submitted($param_name = null);
 
-    public function send_file($file_path);
+    public function sendFile($file_path);
 
 
-    public function web_root(): string;
+    public function webRoot(): string;
     // public function file_root(): string;
 
     public function mapHomeRoute($route);
@@ -36,12 +36,12 @@ interface RouterInterface
     public function setFilePath($setter);
     public function setBasePath($setter);
 
-    public function filePath($setter);
-    public function basePath($setter);
+    public function filePath($setter=null): string;
+    public function basePath($setter=null): string;
 
     // public function set_file_root($setter);
 
-    public function target_controller();
-    public function target_method();
+    public function targetController();
+    public function targetMethod();
     public function name();
 }

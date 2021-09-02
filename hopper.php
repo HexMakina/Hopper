@@ -50,47 +50,27 @@ class hopper extends \AltoRouter implements RouterInterface
 
     public function params($param_name = null)
     {
-        return $this->extract_request($this->match['params'] ?? [], $param_name);
+        return $this->extractFrom($this->match['params'] ?? [], $param_name);
     }
 
     public function submitted($param_name = null)
     {
-        return $this->extract_request($_POST, $param_name);
+        return $this->extractFrom($_POST, $param_name);
     }
 
-    private function extract_request($dat_ass, $key = null)
-    {
 
-      // $key is null, returns $dat_ass or empty array
-        if (is_null($key)) {
-            return $dat_ass ?? [];
-        }
-
-      // $dat_ass[$key] not set, returns null
-        if (!isset($dat_ass[$key])) {
-            return null;
-        }
-
-      // $dat_ass[$key] is a string, returns decoded value
-        if (is_string($dat_ass[$key])) {
-            return urldecode($dat_ass[$key]);
-        }
-
-      // $dat_ass[$key] is not a string, return match[$key]
-        return $dat_ass[$key];
-    }
 
     public function target()
     {
         return $this->match['target'];
     }
 
-    public function target_controller()
+    public function targetController()
     {
         return $this->match['target_controller'];
     }
 
-    public function target_method()
+    public function targetMethod()
     {
         return $this->match['target_method'];
     }
@@ -101,17 +81,17 @@ class hopper extends \AltoRouter implements RouterInterface
     }
 
   // -- ROUTING TOOLS
-    public function route_exists($route): bool
+    public function routeExists($route): bool
     {
         return isset($this->namedRoutes[$route]);
     }
 
-    public function named_routes()
+    public function namedRoutes()
     {
         return $this->namedRoutes;
     }
 
-  /*
+  /* Generates HYPertext reference
    * @param route_name string  requires
    *  - a valid AltoRouter route name
    *  - OR a Descendant of Model
@@ -119,21 +99,18 @@ class hopper extends \AltoRouter implements RouterInterface
    *  - an assoc_array of url params (strongly AltoRouter-based)
    * returns: something to put in a href="", action="" or header('Location:');
    */
-    public function prehop($route, $route_params = [])
+    public function hyp($route, $route_params = [])
     {
         try {
             $url = $this->generate($route, $route_params);
         } catch (\Exception $e) {
-            $url = $this->prehop(self::ROUTE_HOME_NAME);
+            $url = $this->hyp(self::ROUTE_HOME_NAME);
         }
 
         return $url;
     }
 
-    public function prehop_here($url = null)
-    {
-        return $url ?? $_SERVER['REQUEST_URI'];
-    }
+
 
   /*
    * @params $route is
@@ -147,27 +124,32 @@ class hopper extends \AltoRouter implements RouterInterface
         $url = null;
 
         if (is_null($route)) {
-            $url = $this->prehop(self::ROUTE_HOME_NAME, $route_params);
-        } elseif (is_string($route) && $this->route_exists($route)) {
-            $url = $this->prehop($route, $route_params);
+            $url = $this->hyp(self::ROUTE_HOME_NAME, $route_params);
+        } elseif (is_string($route) && $this->routeExists($route)) {
+            $url = $this->hyp($route, $route_params);
         } else {
             $url = $route;
         }
 
-        $this->hop_url($url);
+        $this->hopURL($url);
+    }
+
+    public function stay($url = null)
+    {
+        return $url ?? $_SERVER['REQUEST_URI'];
     }
 
   // hops back to previous page (referer()), or home if no referer
-    public function hop_back()
+    public function hopBack()
     {
         if (!is_null($back = $this->referer())) {
-            $this->hop_url($back);
+            $this->hopURL($back);
         }
 
         $this->hop();
     }
 
-    public function hop_url($url)
+    public function hopURL($url)
     {
         header('Cache-Control: no-cache, must-revalidate');
         header('Expires: Mon, 01 Jan 1970 00:00:00 GMT');
@@ -179,14 +161,14 @@ class hopper extends \AltoRouter implements RouterInterface
   // returns null if same as current URL (prevents endless redirection loop)
     public function referer()
     {
-        if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != $this->web_host() . $_SERVER['REQUEST_URI']) {
+        if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != $this->webHost() . $_SERVER['REQUEST_URI']) {
             return $_SERVER['HTTP_REFERER'];
         }
 
         return null;
     }
 
-    public function send_file($file_path)
+    public function sendFile($file_path)
     {
         if (!file_exists($file_path)) {
             throw new RouterException('SENDING_NON_EXISTING_FILE');
@@ -229,31 +211,56 @@ class hopper extends \AltoRouter implements RouterInterface
         return $_SERVER['REQUEST_METHOD'] === self::REQUEST_POST;
     }
 
-    public function web_host(): string
+    public function webHost(): string
     {
         return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'];
     }
 
-    public function web_root(): string
+    public function webRoot(): string
     {
-        return $this->web_host() . $this->basePath();
+        return $this->webHost() . $this->basePath();
     }
 
     // return web base
-    public function basePath(): string
+    public function basePath($setter=null): string
     {
+      if(!is_null($setter))
+        $this->basePath = $setter;
+
       return $this->basePath ?? '';
     }
 
     // returns root filepath for project
     // default out of vendor/hexmakina/Hopper
-    public function filePath(): string
+    public function filePath($setter=null): string
     {
+      if(!is_null($setter))
+        $this->file_root = realpath($setter) . '/';
+
       return $this->file_root ?? __DIR__.'/../../';
     }
 
-    public function setFilePath($setter)
+
+    private function extractFrom($dat_ass, $key = null)
     {
-        $this->file_root = realpath($setter) . '/';
+
+      // $key is null, returns $dat_ass or empty array
+        if (is_null($key)) {
+            return $dat_ass ?? [];
+        }
+
+      // $dat_ass[$key] not set, returns null
+        if (!isset($dat_ass[$key])) {
+            return null;
+        }
+
+      // $dat_ass[$key] is a string, returns decoded value
+        if (is_string($dat_ass[$key])) {
+            return urldecode($dat_ass[$key]);
+        }
+
+      // $dat_ass[$key] is not a string, return match[$key]
+        return $dat_ass[$key];
     }
+
 }
