@@ -33,9 +33,6 @@ interface RouterInterface
 
     public function mapHomeRoute($route);
 
-    public function setFilePath($setter);
-    public function setBasePath($setter);
-
     public function filePath($setter = null): string;
     public function basePath($setter = null): string;
 
