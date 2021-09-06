@@ -7,10 +7,17 @@
 
 namespace HexMakina\Hopper;
 
-class Hopper extends \AltoRouter implements RouterInterface
+class Hopper extends \AltoRouter implements \HexMakina\Interfaces\RouterInterface
 {
     private $match = null;
     private $file_root = null;
+
+    public function __construct($route_home, $web_base, $file_root)
+    {
+      $this->mapHomeRoute($route_home);
+      $this->basePath($web_base);
+      $this->filePath($file_root);
+    }
 
   //----------------------------------------------------------- INITIALISATION
 
