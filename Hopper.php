@@ -7,7 +7,7 @@
 
 namespace HexMakina\Hopper;
 
-class Hopper extends \AltoRouter implements \HexMakina\Interfaces\RouterInterface
+class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
 {
     private $match = null;
     private $file_root = null;
