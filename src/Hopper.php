@@ -45,7 +45,7 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
 
         $res = explode('::', $this->target());
 
-        if ($res === false || !isset($res[1]) || isset($res[2])) {
+        if (!isset($res[1]) || isset($res[2])) {
             throw new RouterException('INVALID_TARGET_FORMAT');
         }
 
