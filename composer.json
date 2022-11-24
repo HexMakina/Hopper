@@ -3,7 +3,7 @@
     "description": "Router and reverse router based on AltoRouter",
     "type": "package",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.4",
         "hexmakina/black-box": "0.0.*",
         "altorouter/altorouter": "2.0.*"
     },
