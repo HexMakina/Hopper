@@ -2,7 +2,7 @@
 
 /**
 * huppel konijntje huppel and wiebel
-* Hommage to Grace Hopper, programmer & expert in *litteral* duck taping
+* Hommage to Grace Hopper, programmer & expert in *litteral* bug taping
 ***/
 
 namespace HexMakina\Hopper;
@@ -10,7 +10,7 @@ namespace HexMakina\Hopper;
 class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
 {
     private Request $request;
-    private Response $response;
+    private Target $target;
 
     private $file_root = null;
 
@@ -47,9 +47,8 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
         }
 
         $this->request = new Request($match);
-        $this->response = new Response($this->request);
-
-        return [$this->response->controller(), $this->response->method()];
+        $this->target = new Target($this->request);
+        return [$this->target->controller(), $this->target->method()];
     }
 
     // DEPRECATE
@@ -71,21 +70,21 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
     }
 
     // DEPRECATE
-    public function target()
-    {
-        return $this->match['target'];
-    }
+    // public function target()
+    // {
+    //     return $this->match['target'];
+    // }
 
     // DEPRECATE
     public function targetController()
     {
-        return $this->response->controller();
+        return $this->target->controller();
     }
 
     // DEPRECATE
     public function targetMethod()
     {
-        return $this->response->method();
+        return $this->target->method();
     }
 
   // -- ROUTING TOOLS
