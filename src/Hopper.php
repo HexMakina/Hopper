@@ -2,14 +2,16 @@
 
 /**
 * huppel konijntje huppel and wiebel
-* Hommage to Grace Hopper, programmer & expert in *litteral* duck taping
+* Hommage to Grace Hopper, programmer & expert in *litteral* bug taping
 ***/
 
 namespace HexMakina\Hopper;
 
 class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
 {
-    private $match = null;
+    private Request $request;
+    private Target $target;
+
     private $file_root = null;
 
     public function __construct($route_home, $web_base, $file_root)
@@ -34,57 +36,55 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
         unset($dbg['matchTypes']);
         return $dbg;
     }
-  // -- MATCHING REQUESTS
+
+    // -- MATCHING REQUESTS
     public function match($requestUrl = null, $requestMethod = null)
     {
-        $this->match = parent::match($requestUrl, $requestMethod);
+        $match = parent::match($requestUrl, $requestMethod);
 
-        if ($this->match === false) {
+        if ($match === false) {
             throw new RouterException('ROUTE_MATCH_FALSE');
         }
 
-        $res = explode('::', $this->target());
-
-        if (!isset($res[1]) || isset($res[2])) {
-            throw new RouterException('INVALID_TARGET_FORMAT');
-        }
-
-        $this->match['target_controller'] = $res[0];
-        $this->match['target_method'] = $res[1];
-
-        return [$res[0], $res[1]];
+        $this->request = new Request($match);
+        $this->target = new Target($this->request);
+        return [$this->target->controller(), $this->target->method()];
     }
 
+    // DEPRECATE
     public function params($param_name = null)
     {
-        return $this->extractFrom($this->match['params'] ?? [], $param_name);
+        return $this->request->params($param_name);
     }
 
+    // DEPRECATE
     public function submitted($param_name = null)
     {
-        return $this->extractFrom($_POST, $param_name);
+        return $this->request->submitted($param_name);
     }
 
-
-
-    public function target()
-    {
-        return $this->match['target'];
-    }
-
-    public function targetController()
-    {
-        return $this->match['target_controller'];
-    }
-
-    public function targetMethod()
-    {
-        return $this->match['target_method'];
-    }
-
+    // DEPRECATE
     public function name()
     {
-        return $this->match['name'];
+        return $this->request->name();
+    }
+
+    // DEPRECATE
+    // public function target()
+    // {
+    //     return $this->match['target'];
+    // }
+
+    // DEPRECATE
+    public function targetController()
+    {
+        return $this->target->controller();
+    }
+
+    // DEPRECATE
+    public function targetMethod()
+    {
+        return $this->target->method();
     }
 
   // -- ROUTING TOOLS
@@ -116,8 +116,6 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
 
         return $url;
     }
-
-
 
   /*
    * @params $route is
@@ -250,25 +248,5 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
     }
 
 
-    private function extractFrom($dat_ass, $key = null)
-    {
 
-      // $key is null, returns $dat_ass or empty array
-        if (is_null($key)) {
-            return $dat_ass ?? [];
-        }
-
-      // $dat_ass[$key] not set, returns null
-        if (!isset($dat_ass[$key])) {
-            return null;
-        }
-
-      // $dat_ass[$key] is a string, returns decoded value
-        if (is_string($dat_ass[$key])) {
-            return urldecode($dat_ass[$key]);
-        }
-
-      // $dat_ass[$key] is not a string, return match[$key]
-        return $dat_ass[$key];
-    }
 }
