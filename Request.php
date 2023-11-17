@@ -10,12 +10,14 @@ namespace HexMakina\Hopper;
 class Request
 {
     private $alto_match;
-    private Response $target;
+    private $query_parameters;
+    private $params;
 
     public function __construct(array $match)
     {
         $this->alto_match = $match;
-        $this->target = new Response($this);
+        $this->query_parameters = $_GET;
+        $this->params = array_merge($this->alto_match['params'], $this->query_parameters);
     }
 
     // DEPRECATED
@@ -34,20 +36,19 @@ class Request
     // @return return urldecoded string
     public function params($name = null)
     {
-        $params = $this->alto_match['params'] ?? [];
-
         if(is_null($name)){
-            return $params;
+            return $this->params;
         }
 
-        if (!isset($params[$name])) {
+        if (!isset($this->params[$name])) {
             return null;
         }
 
-        if (is_string($params[$name])) {
-            return urldecode($params[$name]);
+        if (is_string($this->params[$name])) {
+            return urldecode($this->params[$name]);
         }
-        return $params[$name];
+
+        return $this->params[$name];
     }
 
     public function submitted($name = null)
