@@ -1,10 +1,5 @@
 <?php
 
-/**
-* huppel konijntje huppel and wiebel
-* Hommage to Grace Hopper, programmer & expert in *litteral* duck taping
-***/
-
 namespace HexMakina\Hopper;
 
 class Request
