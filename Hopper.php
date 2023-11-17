@@ -165,7 +165,7 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
 
   // returns full URL of the refering URL
   // returns null if same as current URL (prevents endless redirection loop)
-    public function referer()
+    public function referer(): ?string
     {
         if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != $this->webHost() . $_SERVER['REQUEST_URI']) {
             return $_SERVER['HTTP_REFERER'];
