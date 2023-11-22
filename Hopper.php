@@ -41,9 +41,13 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
     public function match($requestUrl = null, $requestMethod = null)
     {
         $match = parent::match($requestUrl, $requestMethod);
+        
 
         if ($match === false) {
-            throw new RouterException('ROUTE_MATCH_FALSE');
+            if ($requestUrl === null) {
+                $requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+            }
+            throw new RouterException('ROUTE_MATCH_FAILED #'.$requestUrl);
         }
 
         $this->request = new Request($match);
@@ -117,6 +121,10 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
         return $url;
     }
 
+    public function withFreeParams($href, array $free_params = []){
+        $href .= '?'.http_build_query($free_params);
+        return $href;
+    }
   /*
    * @params $route is
    *    - empty: default is ROUTE_HOME_NAME
@@ -154,6 +162,12 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
         $this->hop();
     }
 
+    // returns current url
+    public function url()
+    {
+        return $_SERVER['REQUEST_SCHEME'] . '://'. $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+    }
+
     public function hopURL($url)
     {
         header('Cache-Control: no-cache, must-revalidate');
@@ -164,7 +178,7 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
 
   // returns full URL of the refering URL
   // returns null if same as current URL (prevents endless redirection loop)
-    public function referer()
+    public function referer(): string
     {
         if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != $this->webHost() . $_SERVER['REQUEST_URI']) {
             return $_SERVER['HTTP_REFERER'];
