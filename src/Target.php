@@ -1,6 +1,5 @@
 <?php
 
-
 namespace HexMakina\Hopper;
 
 class Target
