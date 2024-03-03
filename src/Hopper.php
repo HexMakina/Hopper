@@ -69,6 +69,11 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
         return $this->request->name();
     }
 
+    public function request()
+    {
+        return $this->request;
+    }
+
     // DEPRECATE
     // public function target()
     // {
