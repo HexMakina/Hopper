@@ -69,6 +69,11 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
         return $this->request->name();
     }
 
+    public function request()
+    {
+        return $this->request;
+    }
+
     // DEPRECATE
     // public function target()
     // {
@@ -117,6 +122,7 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
         return $url;
     }
 
+    
   /*
    * @params $route is
    *    - empty: default is ROUTE_HOME_NAME
@@ -137,6 +143,11 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
         }
 
         $this->hopURL($url);
+    }
+
+    public function url(): string
+    {
+        return $this->webHost() . $_SERVER['REQUEST_URI'];
     }
 
     public function stay($url = null)

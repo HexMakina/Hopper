@@ -54,4 +54,11 @@ class Request
         
         return $_POST[$name] ?? null;
     }
+
+    public function payload(): ?string
+    {
+        $res = file_get_contents('php://input');
+        return $res === false ? null : $res;
+    }
+    
 }
