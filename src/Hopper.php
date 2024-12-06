@@ -229,7 +229,7 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
     // return web base
     public function basePath($setter = null): string
     {
-        if (!is_null($setter)) {
+        if ($setter !== null) {
             $this->basePath = $setter;
         }
 
@@ -240,7 +240,7 @@ class Hopper extends \AltoRouter implements \HexMakina\BlackBox\RouterInterface
     // default out of vendor/hexmakina/Hopper
     public function filePath($setter = null): string
     {
-        if (!is_null($setter)) {
+        if ($setter !== null) {
             $this->file_root = realpath($setter) . '/';
         }
 
