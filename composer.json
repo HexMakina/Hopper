@@ -18,10 +18,20 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "HexMakina\\Hopper\\": "/src"
+            "HexMakina\\Hopper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HexMakina\\Hopper\\Tests\\": "tests/"
         }
     },
     "require-dev": {
-        "phpstan/phpstan": "1.8.x-dev"
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9.6"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse"
     }
 }
