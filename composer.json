@@ -3,7 +3,7 @@
     "description": "Router and reverse router based on AltoRouter",
     "type": "package",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.4",
         "hexmakina/black-box": "0.0.*",
         "altorouter/altorouter": "2.0.*"
     },
@@ -18,7 +18,10 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "HexMakina\\Hopper\\": "/"
+            "HexMakina\\Hopper\\": "/src"
         }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "1.8.x-dev"
     }
 }
